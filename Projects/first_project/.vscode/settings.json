@@ -1,0 +1,6 @@
+{
+    "dart.lineLength": 80,
+    "html.format.preserveNewLines": false,
+    "html.format.enable": false,
+    "editor.defaultFormatter": "Dart-Code.dart-code"
+}
