@@ -66,6 +66,7 @@ class _HomeState extends State<Home> {
               child: Text("Tilføj", style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Task t1 = Task(
+                  id: tasks.last.id++,
                   title: titleController.text,
                   description: descController.text,
                   createdDate: DateTime.now(),
@@ -104,7 +105,9 @@ class _HomeState extends State<Home> {
         onPressed: () {
           createDialogue(context).then((value) {
             setState(() {
-              tasks.add(value);
+              if (value != null) {
+                tasks.add(value);
+              }
             });
           });
         },

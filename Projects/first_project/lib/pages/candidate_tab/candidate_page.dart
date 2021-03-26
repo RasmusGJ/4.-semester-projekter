@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:first_project/models/candidate.dart';
 import 'package:first_project/services/http_proxy.dart';
 import 'package:first_project/pages/loading.dart';
-import 'package:first_project/pages/candidate_single/candidate_single.dart';
-
 import 'components/candidates_list.dart';
+import 'components/compare_box.dart';
 
 class CandidatePage extends StatefulWidget {
   @override
@@ -12,8 +11,10 @@ class CandidatePage extends StatefulWidget {
 }
 
 class _CandidatePageState extends State<CandidatePage> {
-  List<Candidate> candidates = [];
+  static List<Candidate> candidates = [];
   List<Candidate> _filteredCandidates = [];
+  List<Candidate> _compareList = [];
+
   bool loading = true;
   bool keyIsSelected = false;
   bool countyIsSelected = false;
@@ -23,9 +24,11 @@ class _CandidatePageState extends State<CandidatePage> {
   void setUpCandidate() async {
     HttpProxy httpProxy = HttpProxy();
     candidates = _filteredCandidates = await httpProxy.getAllCandidates();
-    setState(() {
-      loading = false;
-    });
+    if (this.mounted) {
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   void _filterCandidates(value) {
@@ -56,10 +59,28 @@ class _CandidatePageState extends State<CandidatePage> {
     }
   }
 
+  refresh(Candidate selectedCand) {
+    setState(() {
+      if (_compareList.length < 2) {
+        _compareList.add(selectedCand);
+        print("Added: ${selectedCand.name}");
+      } else {
+        print("You already have 2 candidates");
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    setUpCandidate();
+    if (candidates.length == 0) {
+      setUpCandidate();
+    } else {
+      setState(() {
+        _filteredCandidates = candidates;
+        loading = false;
+      });
+    }
   }
 
   @override
@@ -196,8 +217,11 @@ class _CandidatePageState extends State<CandidatePage> {
               body: Column(
                 children: [
                   CandidatesList(
-                      filteredCandidates: _filteredCandidates,
-                      candidates: candidates),
+                    filteredCandidates: _filteredCandidates,
+                    candidates: candidates,
+                    notifyParent: refresh,
+                  ),
+                  CompareBox(compareList: _compareList),
                 ],
               ),
             ),

@@ -2,18 +2,26 @@ import 'dart:typed_data';
 import 'package:first_project/models/candidate.dart';
 import 'package:first_project/pages/candidate_single/candidate_single.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class CandidatesList extends StatelessWidget {
+class CandidatesList extends StatefulWidget {
+  final List<Candidate> _filteredCandidates;
+  final List<Candidate> candidates;
+  final Function notifyParent;
+
   const CandidatesList({
     Key key,
     @required List<Candidate> filteredCandidates,
     @required this.candidates,
+    @required this.notifyParent,
   })  : _filteredCandidates = filteredCandidates,
         super(key: key);
 
-  final List<Candidate> _filteredCandidates;
-  final List<Candidate> candidates;
+  @override
+  _CandidatesListState createState() => _CandidatesListState();
+}
+
+class _CandidatesListState extends State<CandidatesList> {
+  bool isPressed = false;
 
   Uint8List getImage(value) {
     final UriData data = Uri.parse(value).data;
@@ -25,7 +33,7 @@ class CandidatesList extends StatelessWidget {
     return Expanded(
       child: Container(
         child: ListView.builder(
-          itemCount: _filteredCandidates.length,
+          itemCount: widget._filteredCandidates.length,
           itemBuilder: (context, index) {
             return InkWell(
               child: Stack(
@@ -51,7 +59,7 @@ class CandidatesList extends StatelessWidget {
                               Container(
                                 width: 120,
                                 child: Text(
-                                  _filteredCandidates[index].name,
+                                  widget._filteredCandidates[index].name,
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w700),
@@ -60,14 +68,14 @@ class CandidatesList extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                _filteredCandidates[index].county,
+                                widget._filteredCandidates[index].county,
                                 style: TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
                           Text(
-                            _filteredCandidates[index].education,
+                            widget._filteredCandidates[index].education,
                             style: TextStyle(
                               color: Colors.grey,
                             ),
@@ -100,6 +108,30 @@ class CandidatesList extends StatelessWidget {
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.blue[200],
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  ///////////////////
+                                  onPressed: () {
+                                    widget.notifyParent(
+                                      widget._filteredCandidates[index],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -109,7 +141,7 @@ class CandidatesList extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.memory(
-                        getImage(candidates[index].image),
+                        getImage(widget.candidates[index].image),
                         fit: BoxFit.cover,
                         height: 150,
                         width: 100,
@@ -123,7 +155,7 @@ class CandidatesList extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CandidateSingle(
-                      candidate: candidates[index],
+                      candidate: widget.candidates[index],
                     ),
                   ),
                 );

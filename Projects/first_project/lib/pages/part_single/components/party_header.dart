@@ -1,15 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:first_project/models/party.dart';
 import 'dart:typed_data';
 import 'dart:ui';
-import 'package:first_project/models/candidate.dart';
-import 'package:flutter/material.dart';
 
-class CandidateHeader extends StatelessWidget {
-  const CandidateHeader({
+class PartyHeader extends StatelessWidget {
+  const PartyHeader({
     Key key,
-    @required this.candidate,
+    @required this.party,
   }) : super(key: key);
 
-  final Candidate candidate;
+  final Party party;
 
   Uint8List getImage(value) {
     final UriData data = Uri.parse(value).data;
@@ -44,7 +44,7 @@ class CandidateHeader extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
                   child: Image.memory(
-                    getImage(candidate.image),
+                    getImage(party.image),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -75,7 +75,7 @@ class CandidateHeader extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(120, 100, 0, 0),
               child: ClipOval(
                 child: Image.memory(
-                  getImage(candidate.image),
+                  getImage(party.image),
                   width: 180,
                   height: 180,
                   fit: BoxFit.fill,
@@ -92,7 +92,7 @@ class CandidateHeader extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  candidate.name,
+                  party.name,
                   style: TextStyle(
                     color: Colors.grey[900],
                     fontSize: 28,
@@ -113,7 +113,7 @@ class CandidateHeader extends StatelessWidget {
                     width: 5,
                   ),
                   Text(
-                    candidate.county,
+                    party.bloc,
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[800],

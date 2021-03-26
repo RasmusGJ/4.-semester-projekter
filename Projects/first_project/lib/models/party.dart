@@ -6,9 +6,10 @@ class Party {
   String bloc;
   String numberofcandidates;
   String partydescription;
+  String image;
 
   Party(this.id, this.name, this.age, this.chairman, this.bloc,
-      this.numberofcandidates, this.partydescription);
+      this.numberofcandidates, this.partydescription, this.image);
 
   //LÆS OP PÅ DETTE SENERE LOL
   factory Party.fromJson(dynamic json) {
@@ -19,6 +20,7 @@ class Party {
         json['chairman'] as String,
         json['bloc'] as String,
         json['numberofcandidates'] as String,
-        json['partydescription'] as String);
+        json['partydescription'] as String,
+        json['image'] as String);
   }
 }

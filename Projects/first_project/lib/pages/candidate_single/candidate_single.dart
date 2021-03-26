@@ -1,3 +1,4 @@
+import 'package:first_project/pages/candidate_single/components/facts_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:first_project/models/candidate.dart';
 import 'components/candidate_header.dart';
@@ -30,7 +31,7 @@ class _CandidateSingleState extends State<CandidateSingle>
             SliverAppBar(
               automaticallyImplyLeading: false,
               pinned: false,
-              backgroundColor: Colors.white10,
+              backgroundColor: Colors.white,
               flexibleSpace: FlexibleSpaceBar(
                 collapseMode: CollapseMode.pin,
                 background: Column(
@@ -39,7 +40,7 @@ class _CandidateSingleState extends State<CandidateSingle>
                   ],
                 ),
               ),
-              expandedHeight: 310,
+              expandedHeight: 365,
               bottom: TabBar(
                 controller: controller,
                 unselectedLabelColor: Colors.grey[800],
@@ -103,18 +104,8 @@ class _CandidateSingleState extends State<CandidateSingle>
             Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: widget.candidate.cvs.length,
-                    itemBuilder: (context, index) {
-                      return Stack(
-                        children: [
-                          CVTab(
-                            index: index,
-                            candidate: widget.candidate,
-                          ),
-                        ],
-                      );
-                    },
+                  child: FactsTab(
+                    candidate: widget.candidate,
                   ),
                 ),
               ],

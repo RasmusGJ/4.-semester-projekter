@@ -1,11 +1,13 @@
 import 'package:first_project/models/cv.dart';
-import 'package:first_project/models/keyIssue.dart';
+//import 'package:first_project/models/keyIssue.dart';
 
 class Candidate {
   String id;
   String name;
+  String age;
   String county;
   String education;
+  String profession;
   String mail;
   String image;
   List<CV> cvs;
@@ -14,8 +16,10 @@ class Candidate {
   Candidate({
     this.id,
     this.name,
+    this.age,
     this.county,
     this.education,
+    this.profession,
     this.mail,
     this.image,
     this.cvs,
@@ -33,8 +37,10 @@ class Candidate {
     return Candidate(
       id: json['id'] as String,
       name: json['name'] as String,
+      age: json['age'] as String,
       county: json['county'] as String,
       education: json['education'] as String,
+      profession: json['profession'] as String,
       mail: json['mail'] as String,
       image: json['image'] as String,
       cvs: cvList,

@@ -39,6 +39,8 @@ dev_dependencies:
   get: ^3.24.0
   bordered_text: ^1.0.1
   shimmer: ^1.1.2
+  dotted_border: ^1.0.7
+  fl_chart: ^0.30.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
