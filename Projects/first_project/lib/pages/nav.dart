@@ -28,7 +28,31 @@ class _NavState extends State<Nav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: _widgetOptions.elementAt(_currentIndex)),
+      body: TweenAnimationBuilder(
+        tween: Tween(begin: 0.0, end: 1.0),
+        duration: Duration(milliseconds: 1300),
+        child: Center(
+          child: _widgetOptions.elementAt(_currentIndex),
+        ),
+        builder: (context, value, child) {
+          return ShaderMask(
+            shaderCallback: (rect) {
+              return RadialGradient(
+                radius: value * 3,
+                colors: [
+                  Colors.white,
+                  Colors.white,
+                  Colors.transparent,
+                  Colors.transparent,
+                ],
+                stops: [0.0, 0.6, 0.6, 1.0],
+                center: FractionalOffset(0.95, 0.90),
+              ).createShader(rect);
+            },
+            child: child,
+          );
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.blueGrey[800],
         selectedItemColor: Colors.blue[500],

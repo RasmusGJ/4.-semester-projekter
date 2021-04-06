@@ -63,8 +63,11 @@ class _Home2State extends State<Home2> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => Nav(),
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, _) {
+                        return Nav();
+                      },
+                      opaque: false,
                     ),
                   );
                 },

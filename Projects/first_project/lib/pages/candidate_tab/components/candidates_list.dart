@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:first_project/models/candidate.dart';
 import 'package:first_project/pages/candidate_single/candidate_single.dart';
-import 'package:flutter/material.dart';
 
 class CandidatesList extends StatefulWidget {
   final List<Candidate> _filteredCandidates;
@@ -79,6 +80,7 @@ class _CandidatesListState extends State<CandidatesList> {
                             style: TextStyle(
                               color: Colors.grey,
                             ),
+                            maxLines: 1,
                           ),
                           SizedBox(
                             height: 10,
@@ -141,7 +143,7 @@ class _CandidatesListState extends State<CandidatesList> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.memory(
-                        getImage(widget.candidates[index].image),
+                        getImage(widget._filteredCandidates[index].image),
                         fit: BoxFit.cover,
                         height: 150,
                         width: 100,
@@ -153,7 +155,7 @@ class _CandidatesListState extends State<CandidatesList> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  CupertinoPageRoute(
                     builder: (context) => CandidateSingle(
                       candidate: widget.candidates[index],
                     ),

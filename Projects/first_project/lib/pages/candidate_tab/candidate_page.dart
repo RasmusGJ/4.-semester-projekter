@@ -1,3 +1,4 @@
+import 'package:first_project/models/party.dart';
 import 'package:flutter/material.dart';
 import 'package:first_project/models/candidate.dart';
 import 'package:first_project/services/http_proxy.dart';
@@ -12,6 +13,7 @@ class CandidatePage extends StatefulWidget {
 
 class _CandidatePageState extends State<CandidatePage> {
   static List<Candidate> candidates = [];
+  static List<Party> parties = [];
   List<Candidate> _filteredCandidates = [];
   List<Candidate> _compareList = [];
 
@@ -24,6 +26,14 @@ class _CandidatePageState extends State<CandidatePage> {
   void setUpCandidate() async {
     HttpProxy httpProxy = HttpProxy();
     candidates = _filteredCandidates = await httpProxy.getAllCandidates();
+    parties = await httpProxy.getAllParties();
+    for (var i in candidates) {
+      for (var j in parties) {
+        if (j.id == i.partyId) {
+          i.party = j;
+        }
+      }
+    }
     if (this.mounted) {
       setState(() {
         loading = false;

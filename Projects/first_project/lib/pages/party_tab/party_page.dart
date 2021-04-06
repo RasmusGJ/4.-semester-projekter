@@ -60,7 +60,7 @@ class _PartyPageState extends State<PartyPage> {
                 return [
                   SliverAppBar(
                     title: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                      padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: Container(
                         height: 100,
                         width: 500,

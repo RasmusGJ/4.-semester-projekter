@@ -72,7 +72,7 @@ class _PartyListState extends State<PartyList> {
                               ],
                             ),
                             Text(
-                              widget.parties[index].chairman,
+                              widget.parties[index].age,
                               style: TextStyle(
                                 color: Colors.grey,
                               ),

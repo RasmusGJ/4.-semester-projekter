@@ -23,7 +23,7 @@ class CVTab extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
               child: Container(
                 child: Text(
                   candidate.cvs[index].title,
@@ -34,26 +34,39 @@ class CVTab extends StatelessWidget {
                 ),
               ),
             ),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(17, 0, 0, 0),
+                  child: Container(
+                    child: Text(
+                      "${candidate.cvs[index].fromDate} · ",
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    candidate.cvs[index].toDate,
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Padding(
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.fromLTRB(15, 15, 15, 25),
               child: Container(
                 child: Text(
                   candidate.cvs[index].description,
                   style: TextStyle(
-                    color: Colors.grey[900],
+                    color: Colors.grey[800],
                     fontSize: 15,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Container(
-                child: Text(
-                  "Opdateret: ${candidate.cvs[index].updatedAt}",
-                  style: TextStyle(
-                    color: Colors.grey[900],
-                    fontSize: 10,
                   ),
                 ),
               ),

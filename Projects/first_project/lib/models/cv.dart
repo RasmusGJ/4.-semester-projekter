@@ -14,11 +14,11 @@ class CV {
   //LÆS OP PÅ DETTE SENERE
   factory CV.fromJson(dynamic json) {
     return CV(
-      json['id'] as String,
+      json['_id'] as String,
       json['title'] as String,
       json['description'] as String,
-      json['fromDate'] as String,
-      json['toDate'] as String,
+      json['fromdate'] as String,
+      json['todate'] as String,
       json['type'] as String,
       json['createdAt'] as String,
       json['updatedAt'] as String,

@@ -14,7 +14,7 @@ class Party {
   //LÆS OP PÅ DETTE SENERE LOL
   factory Party.fromJson(dynamic json) {
     return Party(
-        json['id'] as String,
+        json['_id'] as String,
         json['name'] as String,
         json['age'] as String,
         json['chairman'] as String,

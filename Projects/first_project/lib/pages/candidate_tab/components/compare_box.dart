@@ -34,17 +34,17 @@ class _CompareBoxState extends State<CompareBox> {
             Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  padding: EdgeInsets.fromLTRB(23, 8, 0, 8),
                   child: Container(
                     height: 50,
-                    width: 140,
+                    width: 150,
                     decoration: BoxDecoration(
-                      color: Colors.blue[400],
+                      color: Colors.blue[300],
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 3.0,
+                          color: Colors.black,
+                          blurRadius: 1.0,
                         ),
                       ],
                     ),
@@ -55,15 +55,18 @@ class _CompareBoxState extends State<CompareBox> {
                         child: Text(
                           "${widget._compareList[0].name}",
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(color: Colors.white),
+                          maxLines: 2,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(110, 0, 0, 0),
+                  padding: EdgeInsets.fromLTRB(135, 6, 0, 0),
                   child: SizedBox(
                     height: 10,
                     child: IconButton(
@@ -87,7 +90,8 @@ class _CompareBoxState extends State<CompareBox> {
               padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
               child: DottedBorder(
                 child: Container(
-                  height: 50,
+                  height: 40,
+                  width: 150,
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(
@@ -98,31 +102,38 @@ class _CompareBoxState extends State<CompareBox> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Sammenlign",
-                ),
+            IconButton(
+              icon: Icon(
+                Icons.arrow_forward,
+                color: Colors.grey[800],
               ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ComparePage(
+                      compareList: widget._compareList,
+                    ),
+                  ),
+                );
+              },
             )
           ],
           if (widget._compareList.length == 2) ...[
             Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20, 5, 0, 8),
+                  padding: EdgeInsets.fromLTRB(25, 8, 0, 8),
                   child: Container(
                     height: 50,
-                    width: 130,
+                    width: 150,
                     decoration: BoxDecoration(
-                      color: Colors.blue[400],
+                      color: Colors.blue[300],
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 3.0,
+                          color: Colors.black,
+                          blurRadius: 1.0,
                         ),
                       ],
                     ),
@@ -133,15 +144,18 @@ class _CompareBoxState extends State<CompareBox> {
                         child: Text(
                           "${widget._compareList[0].name}",
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(color: Colors.white),
+                          maxLines: 2,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(125, 5, 0, 0),
+                  padding: EdgeInsets.fromLTRB(150, 7, 0, 0),
                   child: SizedBox(
                     height: 10,
                     width: 10,
@@ -165,17 +179,17 @@ class _CompareBoxState extends State<CompareBox> {
             Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20, 5, 0, 5),
+                  padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
                   child: Container(
                     height: 50,
-                    width: 130,
+                    width: 150,
                     decoration: BoxDecoration(
-                      color: Colors.blue[400],
+                      color: Colors.blue[300],
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 3.0,
+                          color: Colors.black,
+                          blurRadius: 1.0,
                         ),
                       ],
                     ),
@@ -186,15 +200,18 @@ class _CompareBoxState extends State<CompareBox> {
                         child: Text(
                           "${widget._compareList[1].name}",
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(color: Colors.white),
+                          maxLines: 2,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(125, 5, 0, 0),
+                  padding: EdgeInsets.fromLTRB(140, 5, 0, 0),
                   child: SizedBox(
                     height: 10,
                     width: 10,
@@ -215,20 +232,24 @@ class _CompareBoxState extends State<CompareBox> {
                 ),
               ],
             ),
-            TextButton(
+            IconButton(
+              icon: Icon(
+                Icons.arrow_forward,
+                color: Colors.grey[800],
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => ComparePage(
-                      compareList: widget._compareList,
-                    ),
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, _) {
+                      return ComparePage(
+                        compareList: widget._compareList,
+                      );
+                    },
+                    opaque: false,
                   ),
                 );
               },
-              child: Text(
-                "Sammenlign",
-              ),
             )
           ],
         ],

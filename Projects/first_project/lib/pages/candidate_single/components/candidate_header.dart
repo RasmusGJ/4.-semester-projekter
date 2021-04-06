@@ -44,7 +44,7 @@ class CandidateHeader extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
                   child: Image.memory(
-                    getImage(candidate.image),
+                    getImage(candidate.party.image),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -78,7 +78,7 @@ class CandidateHeader extends StatelessWidget {
                   getImage(candidate.image),
                   width: 180,
                   height: 180,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
