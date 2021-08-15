@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:first_project/models/party.dart';
-import 'dart:typed_data';
+import 'package:first_project/models/Party/party.dart';
 import 'dart:ui';
 
 class PartyHeader extends StatelessWidget {
@@ -10,12 +9,6 @@ class PartyHeader extends StatelessWidget {
   }) : super(key: key);
 
   final Party party;
-
-  Uint8List getImage(value) {
-    final UriData data = Uri.parse(value).data;
-
-    return data.contentAsBytes();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +21,17 @@ class PartyHeader extends StatelessWidget {
               height: 235,
               width: 800,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black26,
-                        offset: Offset(0, 2),
-                        blurRadius: 6)
-                  ]),
-
-              child: ImageFiltered(
-                imageFilter: ImageFilter.blur(
-                  sigmaX: 3.0,
-                  sigmaY: 3.0,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Image.memory(
-                    getImage(party.image),
-                    fit: BoxFit.cover,
-                  ),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(0, 2),
+                      blurRadius: 6)
+                ],
+              ),
+              child: ClipRRect(
+                child: Image.network(
+                  party.images.banner,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -74,8 +59,8 @@ class PartyHeader extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(120, 100, 0, 0),
               child: ClipOval(
-                child: Image.memory(
-                  getImage(party.image),
+                child: Image.network(
+                  party.images.profile,
                   width: 180,
                   height: 180,
                   fit: BoxFit.fill,

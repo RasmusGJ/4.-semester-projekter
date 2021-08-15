@@ -40,7 +40,7 @@ dev_dependencies:
   bordered_text: ^1.0.1
   shimmer: ^1.1.2
   dotted_border: ^1.0.7
-  fl_chart: ^0.30.0
+  google_fonts: ^1.1.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

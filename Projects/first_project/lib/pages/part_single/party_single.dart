@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:first_project/models/party.dart';
+import 'package:first_project/models/Party/party.dart';
 import 'components/party_header.dart';
 
 class PartySingle extends StatefulWidget {
@@ -98,10 +98,10 @@ class _PartySingleState extends State<PartySingle>
                 labelColor: Colors.blue,
                 tabs: [
                   Tab(
-                    text: "Mærkesager",
+                    text: "Partiets historie",
                   ),
                   Tab(
-                    text: "CV",
+                    text: "Mærkesager",
                   ),
                   Tab(
                     text: "Fakta",

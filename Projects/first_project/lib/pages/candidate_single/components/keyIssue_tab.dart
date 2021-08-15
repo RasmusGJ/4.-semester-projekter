@@ -1,8 +1,8 @@
 import 'package:first_project/models/Candidate/candidate.dart';
 import 'package:flutter/material.dart';
 
-class CVTab extends StatelessWidget {
-  const CVTab({
+class KeyIssueTab extends StatelessWidget {
+  const KeyIssueTab({
     Key key,
     @required this.index,
     @required this.candidate,
@@ -26,7 +26,7 @@ class CVTab extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
               child: Container(
                 child: Text(
-                  candidate.cvs[index].title,
+                  candidate.keyIssues[index].title,
                   style: TextStyle(
                     color: Colors.grey[900],
                     fontSize: 22,
@@ -37,23 +37,21 @@ class CVTab extends StatelessWidget {
             Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(17, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                   child: Container(
-                    child: Text(
-                      "${candidate.cvs[index].fromDate} · ",
-                      style: TextStyle(
-                        color: Colors.grey[700],
-                        fontSize: 15,
-                      ),
+                    decoration: BoxDecoration(
+                      color: Colors.lightGreen[700],
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                  ),
-                ),
-                Container(
-                  child: Text(
-                    candidate.cvs[index].toDate,
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 15,
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                      child: Text(
+                        candidate.keyIssues[index].tag.title,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -63,7 +61,7 @@ class CVTab extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(15, 15, 15, 25),
               child: Container(
                 child: Text(
-                  candidate.cvs[index].description,
+                  candidate.keyIssues[index].description,
                   style: TextStyle(
                     color: Colors.grey[800],
                     fontSize: 15,

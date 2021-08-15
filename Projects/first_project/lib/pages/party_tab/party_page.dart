@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:first_project/pages/loading.dart';
 import 'package:first_project/services/http_proxy.dart';
-import 'package:first_project/models/party.dart';
+import 'package:first_project/models/Party/party.dart';
 import 'package:first_project/pages/party_tab/components/party_list.dart';
 
 class PartyPage extends StatefulWidget {

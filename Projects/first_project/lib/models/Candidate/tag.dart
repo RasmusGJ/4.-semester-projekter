@@ -7,7 +7,7 @@ class Tag {
   //LÆS OP PÅ DETTE SENERE
   factory Tag.fromJson(dynamic json) {
     return Tag(
-      json['id'] as String,
+      json['_id'] as String,
       json['title'] as String,
     );
   }

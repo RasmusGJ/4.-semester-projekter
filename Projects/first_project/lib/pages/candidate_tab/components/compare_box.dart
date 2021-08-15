@@ -1,32 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:first_project/models/candidate.dart';
+import 'package:first_project/models/Candidate/candidate.dart';
 import 'package:first_project/pages/compare_page.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 class CompareBox extends StatefulWidget {
-  const CompareBox({
+  CompareBox({
     Key key,
+    @required double animateheight,
     @required List<Candidate> compareList,
   })  : _compareList = compareList,
+        _height = animateheight,
         super(key: key);
 
   final List<Candidate> _compareList;
+
+  double _height;
 
   @override
   _CompareBoxState createState() => _CompareBoxState();
 }
 
 class _CompareBoxState extends State<CompareBox> {
+  Future<double> get _width => Future<double>.value(40);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      height: widget._height,
+      duration: Duration(milliseconds: 200),
       decoration: BoxDecoration(
-          color: Colors.blue[100],
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(7),
-            topLeft: Radius.circular(7),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
           ),
-          border: Border.all(color: Colors.blue[200])),
+        ],
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(10),
+          topLeft: Radius.circular(10),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -39,7 +55,7 @@ class _CompareBoxState extends State<CompareBox> {
                     height: 50,
                     width: 150,
                     decoration: BoxDecoration(
-                      color: Colors.blue[300],
+                      color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
@@ -57,7 +73,7 @@ class _CompareBoxState extends State<CompareBox> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black54,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -79,6 +95,7 @@ class _CompareBoxState extends State<CompareBox> {
                       onPressed: () {
                         setState(() {
                           widget._compareList.removeAt(0);
+                          widget._height = 0;
                         });
                       },
                     ),
@@ -89,6 +106,8 @@ class _CompareBoxState extends State<CompareBox> {
             Padding(
               padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
               child: DottedBorder(
+                borderType: BorderType.RRect,
+                radius: Radius.circular(8),
                 child: Container(
                   height: 40,
                   width: 150,
@@ -102,21 +121,8 @@ class _CompareBoxState extends State<CompareBox> {
                 ),
               ),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.arrow_forward,
-                color: Colors.grey[800],
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ComparePage(
-                      compareList: widget._compareList,
-                    ),
-                  ),
-                );
-              },
+            SizedBox(
+              width: 2,
             )
           ],
           if (widget._compareList.length == 2) ...[
@@ -128,7 +134,7 @@ class _CompareBoxState extends State<CompareBox> {
                     height: 50,
                     width: 150,
                     decoration: BoxDecoration(
-                      color: Colors.blue[300],
+                      color: Colors.lightGreen[700],
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
@@ -184,7 +190,7 @@ class _CompareBoxState extends State<CompareBox> {
                     height: 50,
                     width: 150,
                     decoration: BoxDecoration(
-                      color: Colors.blue[300],
+                      color: Colors.lightGreen[700],
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
@@ -232,25 +238,36 @@ class _CompareBoxState extends State<CompareBox> {
                 ),
               ],
             ),
-            IconButton(
-              icon: Icon(
-                Icons.arrow_forward,
-                color: Colors.grey[800],
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, _) {
-                      return ComparePage(
-                        compareList: widget._compareList,
+            FutureBuilder<double>(
+              future: _width,
+              initialData: 0.0,
+              builder: (context, snapshot) {
+                return AnimatedContainer(
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeInSine,
+                  width: snapshot.data,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.grey[800],
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, _) {
+                            return ComparePage(
+                              compareList: widget._compareList,
+                            );
+                          },
+                          opaque: false,
+                        ),
                       );
                     },
-                    opaque: false,
                   ),
                 );
               },
-            )
+            ),
           ],
         ],
       ),

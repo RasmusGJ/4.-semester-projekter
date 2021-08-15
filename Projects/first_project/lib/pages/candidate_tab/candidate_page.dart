@@ -1,10 +1,14 @@
-import 'package:first_project/models/party.dart';
+import 'package:first_project/models/Candidate/tag.dart';
+import 'package:first_project/models/Party/party.dart';
 import 'package:flutter/material.dart';
-import 'package:first_project/models/candidate.dart';
+import 'package:first_project/models/Candidate/candidate.dart';
 import 'package:first_project/services/http_proxy.dart';
 import 'package:first_project/pages/loading.dart';
 import 'components/candidates_list.dart';
 import 'components/compare_box.dart';
+import 'components/filter_panel.dart';
+import 'package:first_project/models/party_filter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CandidatePage extends StatefulWidget {
   @override
@@ -12,19 +16,23 @@ class CandidatePage extends StatefulWidget {
 }
 
 class _CandidatePageState extends State<CandidatePage> {
+  double compareboxHeight = 0;
+
   static List<Candidate> candidates = [];
   static List<Party> parties = [];
+  static List<Tag> tags = [];
   List<Candidate> _filteredCandidates = [];
   List<Candidate> _compareList = [];
 
+  String _selectedKommune;
+
+  List<PartyFilter> partyFilter = [];
+
   bool loading = true;
-  bool keyIsSelected = false;
-  bool countyIsSelected = false;
-  bool nameIsSelected = true;
-  bool tagIsSelected = false;
+
+  HttpProxy httpProxy = HttpProxy();
 
   void setUpCandidate() async {
-    HttpProxy httpProxy = HttpProxy();
     candidates = _filteredCandidates = await httpProxy.getAllCandidates();
     parties = await httpProxy.getAllParties();
     for (var i in candidates) {
@@ -34,6 +42,10 @@ class _CandidatePageState extends State<CandidatePage> {
         }
       }
     }
+    await setUpKeyIssueTags();
+    if (partyFilter == null || partyFilter.length == 0) {
+      fillFilterList();
+    }
     if (this.mounted) {
       setState(() {
         loading = false;
@@ -41,42 +53,118 @@ class _CandidatePageState extends State<CandidatePage> {
     }
   }
 
+  Future<void> setUpKeyIssueTags() async {
+    tags = await httpProxy.getAllTags();
+    for (var i in candidates)
+      for (var j in tags) {
+        for (var k in i.keyIssues)
+          if (k.tagId == j.id) {
+            k.tag = j;
+          }
+      }
+  }
+
+  void fillFilterList() {
+    for (var i in parties) {
+      PartyFilter _partyFilter = new PartyFilter();
+      _partyFilter.id = i.id;
+      _partyFilter.isSelected = false;
+      partyFilter.add(_partyFilter);
+    }
+  }
+
   void _filterCandidates(value) {
-    if (nameIsSelected) {
+    setState(() {
+      _filteredCandidates = candidates
+          .where((candidate) =>
+              candidate.name.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
+  }
+
+  applyKommuneFilter(String selectedKommune) {
+    _selectedKommune = selectedKommune;
+    if (selectedKommune.toLowerCase() != "intet valg") {
       setState(() {
         _filteredCandidates = candidates
-            .where((candidate) =>
-                candidate.name.toLowerCase().contains(value.toLowerCase()))
+            .where((candidate) => candidate.county
+                .toLowerCase()
+                .contains(selectedKommune.toLowerCase()))
             .toList();
       });
-    }
-    if (countyIsSelected) {
+    } else {
       setState(() {
-        _filteredCandidates = candidates
-            .where((candidate) =>
-                candidate.county.toLowerCase().contains(value.toLowerCase()))
-            .toList();
+        _filteredCandidates = candidates;
       });
     }
-    if (countyIsSelected || nameIsSelected) {
-      setState(() {
-        _filteredCandidates = candidates
-            .where((candidate) =>
-                candidate.county.toLowerCase().contains(value.toLowerCase()) ||
-                candidate.name.toLowerCase().contains(value.toLowerCase()))
-            .toList();
-      });
-    }
+  }
+
+  applyPartyFilter(List<PartyFilter> partyFilter) {
+    setState(() {
+      //int count = 0;
+      for (var party in parties) {
+        for (var filterElement in partyFilter) {
+          if (party.id == filterElement.id &&
+              filterElement.isSelected == true) {
+            _filteredCandidates = [];
+            _filteredCandidates += candidates
+                .where((candidate) =>
+                    candidate.party.id
+                        .toLowerCase()
+                        .contains(filterElement.id.toLowerCase()) &&
+                    !_filteredCandidates.contains(candidate))
+                .toList();
+            print("start: ${filterElement.id}");
+          }
+        }
+      }
+    });
+  }
+
+  resetFilter() {
+    setState(() {
+      _filteredCandidates = candidates;
+      _selectedKommune = null;
+      for (var i in partyFilter) {
+        i.isSelected = false;
+      }
+    });
+  }
+
+  void _showFilterPanel() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return FilterPanel(
+            parties: parties,
+            notifyParentKommune: applyKommuneFilter,
+            notifyParentParty: applyPartyFilter,
+            resetFilter: resetFilter,
+            selectedLocation: _selectedKommune,
+            partyFilter: partyFilter,
+            tags: tags,
+          );
+        });
   }
 
   refresh(Candidate selectedCand) {
     setState(() {
       if (_compareList.length < 2) {
         _compareList.add(selectedCand);
+        compareboxHeight = 75;
         print("Added: ${selectedCand.name}");
       } else {
         print("You already have 2 candidates");
       }
+    });
+  }
+
+  Future<void> refreshOnScroll() async {
+    setState(() {
+      loading = true;
+      setUpCandidate();
+      resetFilter();
     });
   }
 
@@ -110,7 +198,6 @@ class _CandidatePageState extends State<CandidatePage> {
                         width: 500,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
-                          color: Colors.white12,
                         ),
                         child: Row(
                           children: [
@@ -122,9 +209,9 @@ class _CandidatePageState extends State<CandidatePage> {
                                   Container(
                                     child: Text(
                                       "Hvem vil du gerne\nvide mere om?",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                      style: GoogleFonts.rubik(
                                         color: Colors.black87,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
@@ -143,76 +230,25 @@ class _CandidatePageState extends State<CandidatePage> {
                               ),
                             ),
                             Expanded(
-                              flex: 1,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                    child: Column(
-                                      children: [
-                                        ChoiceChip(
-                                          selected: keyIsSelected,
-                                          label: Text(
-                                            "Mærkesager",
-                                          ),
-                                          onSelected: (selected) {
-                                            setState(() {
-                                              keyIsSelected = selected;
-                                            });
-                                          },
-                                        ),
-                                        ChoiceChip(
-                                          selected: countyIsSelected,
-                                          label: Text(
-                                            "Kommune",
-                                          ),
-                                          onSelected: (selected) {
-                                            setState(() {
-                                              countyIsSelected = selected;
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(25, 0, 0, 0),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.sort,
+                                        size: 40,
+                                        color: Colors.black54,
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                  onPressed: () {
+                                    _showFilterPanel();
+                                  },
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: Column(
-                                      children: [
-                                        ChoiceChip(
-                                          selected: nameIsSelected,
-                                          label: Text(
-                                            "Navn",
-                                          ),
-                                          onSelected: (selected) {
-                                            setState(() {
-                                              nameIsSelected = selected;
-                                            });
-                                          },
-                                        ),
-                                        ChoiceChip(
-                                          selected: tagIsSelected,
-                                          label: Text(
-                                            "Tags",
-                                          ),
-                                          onSelected: (selected) {
-                                            setState(() {
-                                              tagIsSelected = selected;
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -227,11 +263,14 @@ class _CandidatePageState extends State<CandidatePage> {
               body: Column(
                 children: [
                   CandidatesList(
-                    filteredCandidates: _filteredCandidates,
-                    candidates: candidates,
-                    notifyParent: refresh,
+                      filteredCandidates: _filteredCandidates,
+                      candidates: candidates,
+                      notifyParent: refresh,
+                      refreshOnScroll: refreshOnScroll),
+                  CompareBox(
+                    compareList: _compareList,
+                    animateheight: compareboxHeight,
                   ),
-                  CompareBox(compareList: _compareList),
                 ],
               ),
             ),

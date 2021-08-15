@@ -1,6 +1,5 @@
-import 'dart:typed_data';
 import 'dart:ui';
-import 'package:first_project/models/candidate.dart';
+import 'package:first_project/models/Candidate/candidate.dart';
 import 'package:flutter/material.dart';
 
 class CandidateHeader extends StatelessWidget {
@@ -10,12 +9,6 @@ class CandidateHeader extends StatelessWidget {
   }) : super(key: key);
 
   final Candidate candidate;
-
-  Uint8List getImage(value) {
-    final UriData data = Uri.parse(value).data;
-
-    return data.contentAsBytes();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +29,10 @@ class CandidateHeader extends StatelessWidget {
                         blurRadius: 6)
                   ]),
 
-              child: ImageFiltered(
-                imageFilter: ImageFilter.blur(
-                  sigmaX: 3.0,
-                  sigmaY: 3.0,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Image.memory(
-                    getImage(candidate.party.image),
-                    fit: BoxFit.cover,
-                  ),
+              child: ClipRRect(
+                child: Image.network(
+                  candidate.party.images.banner,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -74,8 +60,8 @@ class CandidateHeader extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(120, 100, 0, 0),
               child: ClipOval(
-                child: Image.memory(
-                  getImage(candidate.image),
+                child: Image.network(
+                  candidate.image,
                   width: 180,
                   height: 180,
                   fit: BoxFit.cover,
