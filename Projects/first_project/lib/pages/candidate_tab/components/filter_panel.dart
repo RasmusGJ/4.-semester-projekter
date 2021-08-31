@@ -254,24 +254,43 @@ class _FilterPanelState extends State<FilterPanel> {
           ),
           Container(
             height: 185,
-            child: Wrap(
-              spacing: 5,
+            child: Column(
               children: [
-                for (int i = 0; i < widget.tags.length - 1; i++)
-                  FilterChip(
-                    label: Text(widget.tags[i].title),
-                    showCheckmark: false,
-                    selected: _selected[i],
-                    onSelected: (bool value) {
-                      _selected[i] = value;
-                      setState(() {});
-                    },
-                    elevation: 15,
-                    shadowColor: Colors.transparent,
-                    selectedColor: Colors.green,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(25, 0, 0, 5),
+                    child: Text(
+                      "Tags",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
                   ),
-                SizedBox(
-                  height: 25,
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Wrap(
+                    spacing: 5,
+                    children: [
+                      for (int i = 0; i < widget.tags.length - 1; i++)
+                        FilterChip(
+                          label: Text(widget.tags[i].title),
+                          showCheckmark: false,
+                          selected: _selected[i],
+                          onSelected: (bool value) {
+                            _selected[i] = value;
+                            setState(() {});
+                          },
+                          elevation: 15,
+                          shadowColor: Colors.transparent,
+                          selectedColor: Colors.green,
+                        ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

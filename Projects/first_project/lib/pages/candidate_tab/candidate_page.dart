@@ -100,13 +100,13 @@ class _CandidatePageState extends State<CandidatePage> {
   }
 
   applyPartyFilter(List<PartyFilter> partyFilter) {
+    _filteredCandidates = [];
     setState(() {
-      //int count = 0;
+      int count = 0;
       for (var party in parties) {
         for (var filterElement in partyFilter) {
           if (party.id == filterElement.id &&
               filterElement.isSelected == true) {
-            _filteredCandidates = [];
             _filteredCandidates += candidates
                 .where((candidate) =>
                     candidate.party.id
@@ -115,6 +115,14 @@ class _CandidatePageState extends State<CandidatePage> {
                     !_filteredCandidates.contains(candidate))
                 .toList();
             print("start: ${filterElement.id}");
+          } else if (!partyFilter.contains(false)) {
+            count++;
+            print(count);
+            print(partyFilter.length);
+            if ((partyFilter.length * 10) == count) {
+              resetFilter();
+              print("RESET");
+            }
           }
         }
       }

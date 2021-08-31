@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  font_awesome_flutter: ^8.11.0
+  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,6 +41,18 @@ dev_dependencies:
   shimmer: ^1.1.2
   dotted_border: ^1.0.7
   google_fonts: ^1.1.2
+  flutter_launcher_icons: ^0.9.2
+  font_awesome_flutter: ^8.11.0
+  flutter_app_name: ^0.1.0
+
+
+flutter_app_name:
+  name: "Politikeren"
+
+flutter_icons:
+  image_path: "assets/AppIcon.png"
+  android: true
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
